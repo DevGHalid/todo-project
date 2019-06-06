@@ -1,0 +1,14 @@
+.todo-header,
+.todo-content {
+  padding: 10px 20px;
+}
+
+.todo-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.todo-header,
+.todo-item {
+  display: flex;
+  align-items: center;
+}

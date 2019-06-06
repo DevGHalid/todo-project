@@ -1,24 +1,28 @@
+// @flow
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+// components
+import Header from './components/Header';
+import Main from './components/Main/';
+import TodoList from './components/Todo/TodoList';
+
+// css
 import './App.css';
 
-function App() {
+type Props = {};
+
+function App(props: Props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Router>
+        <Main>
+          <Switch>
+            <Route path="/" component={TodoList} />
+          </Switch>
+        </Main>
+      </Router>
     </div>
   );
 }
