@@ -14,6 +14,6 @@ export default (props: Props) => (
         'aria-label': 'secondary checkbox'
       }}
     />
-    <div class="todo-header__checked_all">Выбрать все</div>
+    <div className="todo-header__checked_all">Выбрать все</div>
   </div>
 );

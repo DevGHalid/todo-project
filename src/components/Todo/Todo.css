@@ -1,14 +1,29 @@
-.todo-header,
-.todo-content {
-  padding: 10px 20px;
-}
-
 .todo-header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .todo-header,
-.todo-item {
+.todo-item__row {
   display: flex;
   align-items: center;
+  padding: 5px 10px;
+}
+
+.todo-item__row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: 0.2s ease-in-out all;
+}
+
+.todo-item:hover {
+  color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(149, 149, 149, 0.1);
+}
+
+.todo-title:hover {
+  cursor: pointer;
+}
+
+.todo-text__through {
+  text-decoration: line-through;
+  opacity: 0.7;
 }
