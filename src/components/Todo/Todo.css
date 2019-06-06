@@ -2,16 +2,29 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.todo-header,
+.todo-field__add,
 .todo-item__row {
-  display: flex;
-  align-items: center;
   padding: 5px 10px;
+  display: flex;
+}
+
+.todo-header__tools {
+  padding: 5px 20px;
+}
+
+.todo-header__tools,
+.todo-item__row {
+  align-items: center;
 }
 
 .todo-item__row {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   transition: 0.2s ease-in-out all;
+}
+
+.todo-item {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
 }
 
 .todo-item:hover {

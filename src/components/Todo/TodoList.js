@@ -1,22 +1,14 @@
-// @flow
-import * as React from 'react';
+import React from 'react';
 
 // components
-import TodoHeader from './TodoHeader';
+import TodoAddItem from './TodoAddItem';
+import TodoTools from './TodoTools';
 import TodoContent from './TodoContent';
 
 // css
 import './Todo.css';
 
-// type type
-interface Props {}
-
-// interface state
-interface State {
-  todoItems: Array<{ id: number, title: string, computed: boolean }>;
-}
-
-class TodoList extends React.Component<Props, State> {
+class TodoList extends React.Component {
   state = {
     todoItems: [
       {
@@ -34,12 +26,36 @@ class TodoList extends React.Component<Props, State> {
         title: 'main renderingr',
         computed: true
       }
-    ]
+    ],
+    isCheckedAll: false
   };
 
+  // add todo item
+  handelAddTodoItem = value => {
+    const index: number = this.state.todoItems.length + 1;
+
+    this.setState({
+      todoItems: [
+        ...this.state.todoItems,
+        {
+          id: index,
+          title: value,
+          computed: false
+        }
+      ]
+    });
+  };
+
+  handelCheckedAllItem = () => {
+    const isCheckedAll = !this.state.isCheckedAll;
+    this.state.todoItems.map(item => (item.computed = isCheckedAll));
+
+    this.setState({ todoItems: this.state.todoItems, isCheckedAll });
+  };
+
+  // edit title
   handelEditTitle = (index: number) => ({ target: { value } }) => {
-    const { todoItems } = this.state;
-    const newTodoItems = todoItems.map(item =>
+    const newTodoItems = this.state.todoItems.map(item =>
       item.id === index ? { ...item, title: value } : item
     );
 
@@ -48,23 +64,30 @@ class TodoList extends React.Component<Props, State> {
     });
   };
 
+  // edit computed
   handelComputed = (index: number) => () => {
-    const { todoItems } = this.state;
-    const newTodoItems = todoItems.map(item =>
+    const newTodoItems = this.state.todoItems.map(item =>
       item.id === index ? { ...item, computed: !item.computed } : item
     );
 
     this.setState({ todoItems: newTodoItems });
   };
 
+  handelRemoveTodoItem = (index: number) => () => {
+    const newTodoItems = this.state.todoItems.filter(item => item.id !== index);
+    this.setState({ todoItems: newTodoItems });
+  };
+
   render() {
     return (
       <section className="todo-section">
-        <TodoHeader />
+        <TodoAddItem handelAddTodoItem={this.handelAddTodoItem} />
+        <TodoTools handelCheckedAllItem={this.handelCheckedAllItem} />
         <TodoContent
           todoItems={this.state.todoItems}
           handelEditValue={this.handelEditTitle}
           handelComputed={this.handelComputed}
+          handelRemoveTodoItem={this.handelRemoveTodoItem}
         />
       </section>
     );

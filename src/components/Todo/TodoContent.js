@@ -1,17 +1,14 @@
-// @flow
 import React from 'react';
 
 // components
 import TodoItem from './TodoItem';
 
-// interface
-interface Props {
-  todoItems: Array<{ id: number, title: string, computed: boolean }>;
-  handelEditValue: Function;
-  handelComputed: Function;
-}
-
-export default ({ todoItems, handelEditValue, handelComputed }: Props) => {
+export default ({
+  todoItems,
+  handelEditValue,
+  handelComputed,
+  handelRemoveTodoItem
+}: Props) => {
   return (
     <div className="todo-content">
       <div className="todo-items">
@@ -22,6 +19,7 @@ export default ({ todoItems, handelEditValue, handelComputed }: Props) => {
             computed={item.computed}
             handelEditValue={handelEditValue(item.id)}
             handelComputed={handelComputed(item.id)}
+            handelRemoveTodoItem={handelRemoveTodoItem(item.id)}
           />
         ))}
       </div>

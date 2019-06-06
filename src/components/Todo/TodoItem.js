@@ -1,25 +1,18 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
-import { ThemeProvider } from '@material-ui/styles';
-
-// type
-interface Props {
-  title: string;
-  computed: boolean;
-  handelEditValue: Function;
-  handelComputed: Function;
-}
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default ({
   title,
   computed,
   handelEditValue,
-  handelComputed
-}: Props) => {
+  handelComputed,
+  handelRemoveTodoItem
+}) => {
+  // edit title
   const [isEdit, setEdit] = useState(false);
   const handelSaveValueFiled = event => event.keyCode === 13 && setEdit(false);
 
@@ -56,6 +49,9 @@ export default ({
           </div>
         )}
       </div>
+      <IconButton aria-label="Delete" onClick={handelRemoveTodoItem}>
+        <DeleteIcon fontSize="small" />
+      </IconButton>
     </div>
   );
 };
