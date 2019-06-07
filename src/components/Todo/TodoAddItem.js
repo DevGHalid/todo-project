@@ -1,37 +1,33 @@
 import React, { useState } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 export default ({ handelAddTodoItem }) => {
   const [value, setValue] = useState('');
 
   return (
     <div className="todo-field__add">
-      <FormControl fullWidth>
-        <InputLabel htmlFor="adornment-amount">Добавить</InputLabel>
-        <Input
-          id="adornment-amount"
-          value={value}
-          onChange={({ target: { value } }) => setValue(value)}
-        />
-      </FormControl>
-      <Button
-        variant="contained"
-        style={{ fontWeight: 'bold', marginLeft: 10 }}
-        color="primary"
-        onClick={() => {
-          if (value.trim()) {
+      <TextField
+        id="outlined-full-width"
+        label="Добавить"
+        style={{ margin: 8 }}
+        placeholder="Добавить"
+        fullWidth
+        margin="normal"
+        variant="outlined"
+        value={value}
+        onChange={({ target: { value } }) => setValue(value)}
+        onKeyDown={({ keyCode }) => {
+          if (keyCode === 13 && value.trim()) {
             // add todo item
             handelAddTodoItem(value);
             // clear field
             setValue('');
           }
         }}
-      >
-        Добавить
-      </Button>
+        InputLabelProps={{
+          shrink: true
+        }}
+      />
     </div>
   );
 };

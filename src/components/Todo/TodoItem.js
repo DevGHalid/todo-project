@@ -1,11 +1,13 @@
 // @flow
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export default ({
+const TodoItem = ({
   title,
   computed,
   handelEditValue,
@@ -41,6 +43,8 @@ export default ({
               id="standard-textarea"
               placeholder="Редактировать"
               margin="normal"
+              multiline
+              rowsMax="4"
               style={{ marginTop: 0 }}
               onChange={handelEditValue}
               onKeyDown={handelSaveValueFiled}
@@ -55,3 +59,13 @@ export default ({
     </div>
   );
 };
+
+TodoItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  computed: PropTypes.bool.isRequired,
+  handelEditValue: PropTypes.func.isRequired,
+  handelComputed: PropTypes.func.isRequired,
+  handelRemoveTodoItem: PropTypes.func.isRequired
+};
+
+export default TodoItem;

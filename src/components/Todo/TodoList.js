@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 // components
 import TodoAddItem from './TodoAddItem';
@@ -32,20 +33,24 @@ class TodoList extends React.Component {
 
   // add todo item
   handelAddTodoItem = value => {
-    const index: number = this.state.todoItems.length + 1;
+    const index = this.state.todoItems.length + 1;
+    const newItemTodo = {
+      title: value,
+      computed: false
+    };
 
-    this.setState({
-      todoItems: [
-        ...this.state.todoItems,
-        {
-          id: index,
-          title: value,
-          computed: false
-        }
-      ]
+    axios.post('/todo/add', newItemTodo);
+
+    process.nextTick(() => {
+      newItemTodo.id = index;
+
+      this.setState({
+        todoItems: [...this.state.todoItems, newItemTodo]
+      });
     });
   };
 
+  // checked all checkbox
   handelCheckedAllItem = () => {
     const isCheckedAll = !this.state.isCheckedAll;
     this.state.todoItems.map(item => (item.computed = isCheckedAll));
@@ -73,6 +78,7 @@ class TodoList extends React.Component {
     this.setState({ todoItems: newTodoItems });
   };
 
+  // remove todo item
   handelRemoveTodoItem = (index: number) => () => {
     const newTodoItems = this.state.todoItems.filter(item => item.id !== index);
     this.setState({ todoItems: newTodoItems });

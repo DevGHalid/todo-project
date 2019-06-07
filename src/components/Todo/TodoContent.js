@@ -8,7 +8,7 @@ export default ({
   handelEditValue,
   handelComputed,
   handelRemoveTodoItem
-}: Props) => {
+}) => {
   return (
     <div className="todo-content">
       <div className="todo-items">
