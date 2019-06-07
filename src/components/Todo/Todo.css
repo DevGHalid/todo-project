@@ -2,6 +2,14 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.todo-list {
+  background-color: rgba(255, 255, 255, 0.9);
+  min-height: 800px;
+  padding-top: 20px;
+  border-radius: 2px;
+  /* padding: 10px 20px 0; */
+}
+
 .todo-field__add,
 .todo-item__row {
   padding: 5px 10px;

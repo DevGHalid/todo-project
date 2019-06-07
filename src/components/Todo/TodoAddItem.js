@@ -17,7 +17,7 @@ export default ({ handelAddTodoItem }) => {
         value={value}
         onChange={({ target: { value } }) => setValue(value)}
         onKeyDown={({ keyCode }) => {
-          if (keyCode === 13 && value.trim()) {
+          if (value.trim() && keyCode === 13) {
             // add todo item
             handelAddTodoItem(value);
             // clear field

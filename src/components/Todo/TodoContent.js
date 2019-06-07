@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 // components
-import TodoItem from './TodoItem';
+import TodoItem from "./TodoItem";
 
 export default ({
   todoItems,
@@ -12,16 +12,20 @@ export default ({
   return (
     <div className="todo-content">
       <div className="todo-items">
-        {todoItems.map(item => (
-          <TodoItem
-            key={item.id}
-            title={item.title}
-            computed={item.computed}
-            handelEditValue={handelEditValue(item.id)}
-            handelComputed={handelComputed(item.id)}
-            handelRemoveTodoItem={handelRemoveTodoItem(item.id)}
-          />
-        ))}
+        {todoItems.length > 0 ? (
+          todoItems.map(item => (
+            <TodoItem
+              key={item._id}
+              title={item.title}
+              computed={item.computed}
+              handelEditValue={handelEditValue(item._id)}
+              handelComputed={handelComputed(item._id)}
+              handelRemoveTodoItem={handelRemoveTodoItem(item._id)}
+            />
+          ))
+        ) : (
+          <h1 style={{ textAlign: "center" }}>Пусто! (-_-)</h1>
+        )}
       </div>
     </div>
   );
