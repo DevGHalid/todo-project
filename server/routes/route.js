@@ -1,4 +1,3 @@
-const mongoose = require("../mongoose");
 const { TodoList } = require("../models/todoList");
 const { Router } = require("express");
 
@@ -14,7 +13,8 @@ router.post("/add", async (req, res, next) => {
       await todoList.save();
 
       // get all lists todo
-      res.json(await todoList.getStateActive());
+      const todoItems = await todoList.getStateActive();
+      res.json(todoItems);
     } else {
       const error = new Error("Bad request");
       error.status = 400;
@@ -25,6 +25,21 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.get("/:id/edit", (req, res) => {});
+router.post("/update", (req, res, next) => {
+  const data = req.body;
+
+  if ("index" in data && "payload" in data) {
+    const { index, payload } = data;
+
+    const todoItem = TodoList.updateOne({ _id: index }, { $set: payload })
+      .then(data => TodoList.findOne({ _id: index }))
+      .then(item => res.json(item))
+      .catch(next);
+  } else {
+    const error = new Error("Bad request");
+    error.status = 400;
+    next(error);
+  }
+});
 
 module.exports = router;
