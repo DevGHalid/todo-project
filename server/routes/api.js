@@ -2,11 +2,12 @@ const { Router } = require("express");
 const router = new Router();
 const { TodoList } = require("../models/todoList");
 
-router.get("/todos", async (req, res) => {
+router.get("/todos", (req, res, next) => {
   const todoList = new TodoList();
-  const todoItems = await todoList.getStateActive();
-
-  res.json(todoItems);
+  todoList
+    .getStateActive()
+    .then(item => res.json(item))
+    .catch(next);
 });
 
 module.exports = router;

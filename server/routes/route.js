@@ -10,11 +10,9 @@ router.post("/add", async (req, res, next) => {
     if ("title" in data && "computed" in data) {
       // add new todo
       const todoList = new TodoList(data);
-      await todoList.save();
+      const response = await todoList.save();
 
-      // get all lists todo
-      const todoItems = await todoList.getStateActive();
-      res.json(todoItems);
+      res.json(response);
     } else {
       const error = new Error("Bad request");
       error.status = 400;
@@ -25,19 +23,25 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.post("/update", (req, res, next) => {
+router.post("/update", async (req, res, next) => {
   const data = req.body;
+  try {
+    if ("id" in data && "payload" in data) {
+      const { id, payload } = data;
+      const response = await TodoList.updateOne({ _id: id }, { $set: payload });
 
-  if ("index" in data && "payload" in data) {
-    const { index, payload } = data;
-
-    const todoItem = TodoList.updateOne({ _id: index }, { $set: payload })
-      .then(data => TodoList.findOne({ _id: index }))
-      .then(item => res.json(item))
-      .catch(next);
-  } else {
-    const error = new Error("Bad request");
-    error.status = 400;
+      if (response.ok) {
+        const todoItem = await TodoList.findOne({ _id: id });
+        res.json(todoItem);
+      } else {
+        res.send(null);
+      }
+    } else {
+      const error = new Error("Bad request");
+      error.status = 400;
+      throw error;
+    }
+  } catch (error) {
     next(error);
   }
 });

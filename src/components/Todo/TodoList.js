@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, Component } from "react";
 import axios from "axios";
 
 // components
@@ -6,13 +6,13 @@ import TodoAddItem from "./TodoAddItem";
 import TodoTools from "./TodoTools";
 import TodoContent from "./TodoContent";
 
-// context
-import { TodoContext } from "./context";
-
 // css
 import "./Todo.css";
 
-class TodoList extends React.Component {
+// context
+export const TodoContext = createContext({});
+
+export class TodoList extends Component {
   state = {
     todoItems: [],
     isLoading: true,
@@ -38,21 +38,28 @@ class TodoList extends React.Component {
       title: value,
       computed: false
     });
-    this.setState({ todoItems: data });
+
+    const newTodoItems = this.state.todoItems.concat(data);
+    this.setState({ todoItems: newTodoItems });
   };
 
-  handelEditComputed = index => computed => () => {
-    this.updateDataTodo({ index, payload: { computed: !computed } });
+  handelUpdateComputed = id => computed => {
+    this.updateDataTodo({ id, payload: { computed: !computed } });
+  };
+
+  handelUpdateValue = id => value => {
+    this.updateDataTodo({ id, payload: { title: value } });
   };
 
   updateDataTodo = async newData => {
     const { status, data } = await axios.post("/todo/update", newData);
 
-    if (status === 200) {
+    if (status === 200 && data) {
       const { _id } = data;
       const newTodoItems = this.state.todoItems.map(item =>
         item._id === _id ? data : item
       );
+
       this.setState({ todoItems: newTodoItems });
     }
   };
@@ -64,7 +71,10 @@ class TodoList extends React.Component {
     return (
       <section className="todo-list">
         <TodoContext.Provider
-          value={{ handelEditComputed: this.handelEditComputed }}
+          value={{
+            handelUpdateComputed: this.handelUpdateComputed,
+            handelUpdateValue: this.handelUpdateValue
+          }}
         >
           <TodoAddItem handelAddTodoItem={this.handelAddTodoItem} />
           <TodoTools handelCheckedAllItem={this.handelCheckedAllItem} />
@@ -82,5 +92,3 @@ class TodoList extends React.Component {
     );
   }
 }
-
-export default TodoList;

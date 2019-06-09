@@ -10,7 +10,7 @@ export default ({ todoItems }) => {
         {todoItems.length > 0 ? (
           todoItems.map(item => <TodoItem key={item._id} {...item} />)
         ) : (
-          <h1 style={{ textAlign: "center" }}>Пусто! (-_-)</h1>
+          <h1 style={{ textAlign: "center" }}>Пусто (-_-)</h1>
         )}
       </div>
     </div>
