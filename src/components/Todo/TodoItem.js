@@ -16,18 +16,20 @@ const TodoItem = ({ _id, title, computed }) => {
   const [value, setValue] = useState(title);
 
   // context
-  const { handelUpdateComputed, handelUpdateValue } = useContext(TodoContext);
+  const { updateComputed, updateValue, deleteTodoItem } = useContext(
+    TodoContext
+  );
 
   // change title
   const changeTitle = ({ keyCode }) => {
     if (keyCode === 13) {
       setEdit(false);
-      handelUpdateValue(_id)(value);
+      updateValue(_id)(value);
     }
   };
 
   // change computed
-  const changeComputed = () => handelUpdateComputed(_id)(computed);
+  const changeComputed = () => updateComputed(_id)(computed);
 
   return (
     <div className="todo-item">
@@ -65,7 +67,10 @@ const TodoItem = ({ _id, title, computed }) => {
         )}
       </div>
       <div className="delete-btn">
-        <IconButton aria-label="Delete">
+        <IconButton
+          aria-label="Delete"
+          onClick={() => deleteTodoItem(String(_id))}
+        >
           <DeleteIcon fontSize="small" />
         </IconButton>
       </div>

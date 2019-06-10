@@ -17,7 +17,7 @@ function App(props: Props) {
       <Router>
         <Main>
           <Switch>
-            <Route path="/" component={TodoList} />
+            <Route path="/todo" component={TodoList} />
           </Switch>
         </Main>
       </Router>

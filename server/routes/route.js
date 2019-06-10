@@ -1,10 +1,10 @@
-const { TodoList } = require("../models/todoList");
 const { Router } = require("express");
-
+const { TodoList } = require("../models/todoList");
+const { STATE_NOACTIVE } = require("../state");
 const router = new Router();
 
-// add todo to bd
-router.post("/add", async (req, res, next) => {
+// create todo to bd
+router.post("/create", async (req, res, next) => {
   const data = req.body;
   try {
     if ("title" in data && "computed" in data) {
@@ -23,19 +23,15 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
+// update
 router.post("/update", async (req, res, next) => {
   const data = req.body;
   try {
     if ("id" in data && "payload" in data) {
       const { id, payload } = data;
       const response = await TodoList.updateOne({ _id: id }, { $set: payload });
-
-      if (response.ok) {
-        const todoItem = await TodoList.findOne({ _id: id });
-        res.json(todoItem);
-      } else {
-        res.send(null);
-      }
+      const todoItem = await TodoList.findOne({ _id: id });
+      res.json(todoItem);
     } else {
       const error = new Error("Bad request");
       error.status = 400;
@@ -43,6 +39,17 @@ router.post("/update", async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+//delete todo
+router.delete("/:id/del", (req, res, next) => {
+  if ("id" in req.params) {
+    const { id } = req.params;
+
+    TodoList.updateOne({ _id: id }, { $set: { stateAt: STATE_NOACTIVE } })
+      .then(data => res.json(data))
+      .catch(next);
   }
 });
 

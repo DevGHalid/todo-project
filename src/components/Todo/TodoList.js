@@ -2,8 +2,8 @@ import React, { createContext, Component } from "react";
 import axios from "axios";
 
 // components
-import TodoAddItem from "./TodoAddItem";
-import TodoTools from "./TodoTools";
+import TodoAdd from "./TodoAdd";
+import TodoSearch from "./TodoSearch";
 import TodoContent from "./TodoContent";
 
 // css
@@ -15,8 +15,8 @@ export const TodoContext = createContext({});
 export class TodoList extends Component {
   state = {
     todoItems: [],
-    isLoading: true,
-    isCheckedAll: false
+    searchValue: "",
+    isLoading: true
   };
 
   componentDidMount = async () => {
@@ -24,17 +24,15 @@ export class TodoList extends Component {
     this.setState({ todoItems: response.data, isLoading: false });
   };
 
-  // checked all checkbox
-  handelCheckedAllItem = () => {
-    const isCheckedAll = !this.state.isCheckedAll;
-    this.state.todoItems.map(item => (item.computed = isCheckedAll));
-
-    this.setState({ todoItems: this.state.todoItems, isCheckedAll });
+  // search todo
+  searchTodo = ({ target: { value } }) => {
+    value = value.trim();
+    this.setState({ searchValue: value });
   };
 
   // add todo item
-  handelAddTodoItem = async value => {
-    const { data } = await axios.post("/todo/add", {
+  createTodoItem = async value => {
+    const { data } = await axios.post("/todo/create", {
       title: value,
       computed: false
     });
@@ -43,18 +41,21 @@ export class TodoList extends Component {
     this.setState({ todoItems: newTodoItems });
   };
 
-  handelUpdateComputed = id => computed => {
+  // update computed to db
+  updateComputed = id => computed => {
     this.updateDataTodo({ id, payload: { computed: !computed } });
   };
 
-  handelUpdateValue = id => value => {
+  // update title to db
+  updateValue = id => value => {
     this.updateDataTodo({ id, payload: { title: value } });
   };
 
+  // update data todo to db
   updateDataTodo = async newData => {
     const { status, data } = await axios.post("/todo/update", newData);
 
-    if (status === 200 && data) {
+    if (status === 200) {
       const { _id } = data;
       const newTodoItems = this.state.todoItems.map(item =>
         item._id === _id ? data : item
@@ -65,26 +66,36 @@ export class TodoList extends Component {
   };
 
   // remove todo item
-  handelRemoveTodoItem = index => {};
+  deleteTodoItem = async id => {
+    const _id = encodeURI(id);
+    const { data } = await axios.delete(`todo/${_id}/del`);
+    if (data.ok) {
+      const newTodoItems = this.state.todoItems.filter(item => item._id !== id);
+      this.setState({ todoItems: newTodoItems });
+    }
+  };
 
   render() {
     return (
       <section className="todo-list">
         <TodoContext.Provider
           value={{
-            handelUpdateComputed: this.handelUpdateComputed,
-            handelUpdateValue: this.handelUpdateValue
+            updateComputed: this.updateComputed,
+            updateValue: this.updateValue,
+            deleteTodoItem: this.deleteTodoItem
           }}
         >
-          <TodoAddItem handelAddTodoItem={this.handelAddTodoItem} />
-          <TodoTools handelCheckedAllItem={this.handelCheckedAllItem} />
+          <TodoAdd addTodoItem={this.createTodoItem} />
+          <TodoSearch
+            onSearchTodo={this.searchTodo}
+            searchValue={this.state.searchValue}
+          />
           {this.state.isLoading ? (
             <p style={{ paddingLeft: 20 }}>Загрузка...</p>
           ) : (
             <TodoContent
               todoItems={this.state.todoItems}
-              handelComputed={this.handelComputed}
-              handelRemoveTodoItem={this.handelRemoveTodoItem}
+              searchValue={this.state.searchValue}
             />
           )}
         </TodoContext.Provider>
