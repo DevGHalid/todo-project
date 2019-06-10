@@ -1,13 +1,13 @@
-import React, { createContext, Component } from "react";
-import axios from "axios";
+import React, { createContext, Component } from 'react';
+import axios from 'axios';
 
 // components
-import TodoAdd from "./TodoAdd";
-import TodoSearch from "./TodoSearch";
-import TodoContent from "./TodoContent";
+import TodoAdd from './TodoAdd';
+import TodoSearch from './TodoSearch';
+import TodoContent from './TodoContent';
 
 // css
-import "./Todo.css";
+import './Todo.css';
 
 // context
 export const TodoContext = createContext({});
@@ -15,24 +15,24 @@ export const TodoContext = createContext({});
 export class TodoList extends Component {
   state = {
     todoItems: [],
-    searchValue: "",
+    searchValue: '',
     isLoading: true
   };
 
   componentDidMount = async () => {
-    const response = await axios.get("/api/todos");
+    const response = await axios.get('/api/todos');
     this.setState({ todoItems: response.data, isLoading: false });
   };
 
   // search todo
   searchTodo = ({ target: { value } }) => {
-    value = value.trim();
+    value = value.toLowerCase().trim();
     this.setState({ searchValue: value });
   };
 
   // add todo item
-  createTodoItem = async value => {
-    const { data } = await axios.post("/todo/create", {
+  addTodoItem = async value => {
+    const { data } = await axios.post('/todo/add', {
       title: value,
       computed: false
     });
@@ -53,7 +53,7 @@ export class TodoList extends Component {
 
   // update data todo to db
   updateDataTodo = async newData => {
-    const { status, data } = await axios.post("/todo/update", newData);
+    const { status, data } = await axios.put('/todo/update', newData);
 
     if (status === 200) {
       const { _id } = data;
@@ -85,7 +85,7 @@ export class TodoList extends Component {
             deleteTodoItem: this.deleteTodoItem
           }}
         >
-          <TodoAdd addTodoItem={this.createTodoItem} />
+          <TodoAdd addTodoItem={this.addTodoItem} />
           <TodoSearch
             onSearchTodo={this.searchTodo}
             searchValue={this.state.searchValue}

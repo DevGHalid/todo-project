@@ -1,8 +1,9 @@
 {
   "port": 8080,
+  "debug": true,
+
   "mongoose": {
     "uri": "mongodb://localhost/todo",
-    "options": { "useNewUrlParser": true },
-    "debug": true
+    "options": { "useNewUrlParser": true }
   }
 }

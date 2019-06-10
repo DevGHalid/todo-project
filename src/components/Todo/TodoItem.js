@@ -1,16 +1,16 @@
 // @flow
-import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 // context
-import { TodoContext } from "./TodoList";
+import { TodoContext } from './TodoList';
 
-const TodoItem = ({ _id, title, computed }) => {
+const TodoItem = ({ _id, title, computed, ...props }) => {
   // state
   const [isEdit, setEdit] = useState(false);
   const [value, setValue] = useState(title);
@@ -40,12 +40,12 @@ const TodoItem = ({ _id, title, computed }) => {
           onChange={changeComputed}
           color="primary"
           inputProps={{
-            "aria-label": "secondary checkbox"
+            'aria-label': 'secondary checkbox'
           }}
         />
         {!isEdit ? (
           <div
-            className={`todo-title ${computed ? "todo-text__through" : ""}`}
+            className={`todo-title ${computed ? 'todo-text__through' : ''}`}
             onClick={() => setEdit(true)}
           >
             {value}

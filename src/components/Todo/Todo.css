@@ -1,10 +1,13 @@
-.todo-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
 .todo-list {
   margin-bottom: 60px;
   min-height: 800px;
+}
+
+.todo-link {
+  font-weight: 700;
+  display: inline-block;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 .todo-field__add,
@@ -13,11 +16,6 @@
   display: flex;
 }
 
-.todo-header__tools {
-  padding: 5px 20px;
-}
-
-.todo-header__tools,
 .todo-item__row {
   align-items: center;
 }
