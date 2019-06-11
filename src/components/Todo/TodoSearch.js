@@ -1,9 +1,9 @@
-import React from "react";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
 export default ({ onSearchTodo, searchValue }) => {
   return (
-    <div className="todo-field__add">
+    <div className="task-field__add">
       <TextField
         id="outlined-full-width"
         label="Поиск"

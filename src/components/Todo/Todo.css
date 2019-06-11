@@ -1,45 +1,45 @@
-.todo-list {
+.task-list {
   margin-bottom: 60px;
   min-height: 800px;
 }
 
-.todo-link {
+.task-link {
   font-weight: 700;
   display: inline-block;
   margin-left: 20px;
   margin-bottom: 20px;
 }
 
-.todo-field__add,
-.todo-item__row {
+.task-field__add,
+.task-item__row {
   padding: 5px 10px;
   display: flex;
 }
 
-.todo-item__row {
+.task-item__row {
   align-items: center;
 }
 
-.todo-item__row {
+.task-item__row {
   transition: 0.2s ease-in-out all;
 }
 
-.todo-item {
+.task-item {
   display: flex;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   justify-content: space-between;
 }
 
-.todo-item:hover {
+.task-item:hover {
   color: rgba(0, 0, 0, 0.7);
   background-color: rgba(149, 149, 149, 0.1);
 }
 
-.todo-title:hover {
+.task-title:hover {
   cursor: pointer;
 }
 
-.todo-text__through {
+.task-text__through {
   text-decoration: line-through;
   opacity: 0.7;
 }

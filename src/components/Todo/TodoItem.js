@@ -16,9 +16,7 @@ const TodoItem = ({ _id, title, computed, ...props }) => {
   const [value, setValue] = useState(title);
 
   // context
-  const { updateComputed, updateValue, deleteTodoItem } = useContext(
-    TodoContext
-  );
+  const { updateComputed, updateValue, deleteTask } = useContext(TodoContext);
 
   // change title
   const changeTitle = ({ keyCode }) => {
@@ -28,16 +26,13 @@ const TodoItem = ({ _id, title, computed, ...props }) => {
     }
   };
 
-  // change computed
-  const changeComputed = () => updateComputed(_id)(computed);
-
   return (
-    <div className="todo-item">
-      <div className="todo-item__row">
+    <div className="task-item">
+      <div className="task-item__row">
         <Checkbox
           value="checkedB"
           checked={computed}
-          onChange={changeComputed}
+          onChange={() => updateComputed(_id)(computed)}
           color="primary"
           inputProps={{
             'aria-label': 'secondary checkbox'
@@ -45,13 +40,13 @@ const TodoItem = ({ _id, title, computed, ...props }) => {
         />
         {!isEdit ? (
           <div
-            className={`todo-title ${computed ? 'todo-text__through' : ''}`}
+            className={`task-title ${computed ? 'task-text__through' : ''}`}
             onClick={() => setEdit(true)}
           >
             {value}
           </div>
         ) : (
-          <div className="todo-filed__edit">
+          <div className="task-filed__edit">
             <TextField
               id="standard-textarea"
               placeholder="Редактировать"
@@ -67,10 +62,7 @@ const TodoItem = ({ _id, title, computed, ...props }) => {
         )}
       </div>
       <div className="delete-btn">
-        <IconButton
-          aria-label="Delete"
-          onClick={() => deleteTodoItem(String(_id))}
-        >
+        <IconButton aria-label="Delete" onClick={() => deleteTask(String(_id))}>
           <DeleteIcon fontSize="small" />
         </IconButton>
       </div>

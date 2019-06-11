@@ -3,9 +3,9 @@ import React from 'react';
 // components
 import TodoItem from './TodoItem';
 
-const TodoContent = ({ todoItems, searchValue, ...props }) => {
+const TodoContent = ({ tasks, searchValue, ...props }) => {
   if (searchValue) {
-    todoItems = todoItems.filter(
+    tasks = tasks.filter(
       item =>
         String(item.title)
           .toLowerCase()
@@ -14,10 +14,10 @@ const TodoContent = ({ todoItems, searchValue, ...props }) => {
   }
 
   return (
-    <div className="todo-content">
-      <div className="todo-items">
-        {todoItems.length > 0 ? (
-          todoItems.map(item => <TodoItem key={item._id} {...item} />)
+    <div className="task-content">
+      <div className="task-items">
+        {tasks.length > 0 ? (
+          tasks.map(item => <TodoItem key={item._id} {...item} />)
         ) : (
           <h1 style={{ textAlign: 'center' }}>Пусто</h1>
         )}

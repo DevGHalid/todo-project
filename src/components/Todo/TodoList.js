@@ -14,87 +14,87 @@ export const TodoContext = createContext({});
 
 export class TodoList extends Component {
   state = {
-    todoItems: [],
+    tasks: [],
     searchValue: '',
     isLoading: true
   };
 
   componentDidMount = async () => {
     const response = await axios.get('/api/todos');
-    this.setState({ todoItems: response.data, isLoading: false });
+    this.setState({ tasks: response.data, isLoading: false });
   };
 
   // search todo
-  searchTodo = ({ target: { value } }) => {
+  searchTask = ({ target: { value } }) => {
     value = value.toLowerCase().trim();
     this.setState({ searchValue: value });
   };
 
   // add todo item
-  addTodoItem = async value => {
+  addTask = async value => {
     const { data } = await axios.post('/todo/add', {
       title: value,
       computed: false
     });
 
-    const newTodoItems = this.state.todoItems.concat(data);
-    this.setState({ todoItems: newTodoItems });
+    const newtasks = this.state.tasks.concat(data);
+    this.setState({ tasks: newtasks });
   };
 
   // update computed to db
   updateComputed = id => computed => {
-    this.updateDataTodo({ id, payload: { computed: !computed } });
+    this.updateDataTask({ id, payload: { computed: !computed } });
   };
 
   // update title to db
   updateValue = id => value => {
-    this.updateDataTodo({ id, payload: { title: value } });
+    this.updateDataTask({ id, payload: { title: value } });
   };
 
-  // update data todo to db
-  updateDataTodo = async newData => {
+  // update data task to db
+  updateDataTask = async newData => {
     const { status, data } = await axios.put('/todo/update', newData);
 
     if (status === 200) {
       const { _id } = data;
-      const newTodoItems = this.state.todoItems.map(item =>
+      const newtasks = this.state.tasks.map(item =>
         item._id === _id ? data : item
       );
 
-      this.setState({ todoItems: newTodoItems });
+      this.setState({ tasks: newtasks });
     }
   };
 
   // remove todo item
-  deleteTodoItem = async id => {
+  deleteTask = async id => {
     const _id = encodeURI(id);
     const { data } = await axios.delete(`todo/${_id}/del`);
     if (data.ok) {
-      const newTodoItems = this.state.todoItems.filter(item => item._id !== id);
-      this.setState({ todoItems: newTodoItems });
+      const newtasks = this.state.tasks.filter(item => item._id !== id);
+      this.setState({ tasks: newtasks });
     }
   };
 
   render() {
     return (
-      <section className="todo-list">
+      <section className="task-list">
         <TodoContext.Provider
           value={{
             updateComputed: this.updateComputed,
             updateValue: this.updateValue,
-            deleteTodoItem: this.deleteTodoItem
+            deleteTask: this.deleteTask
           }}
         >
-          <TodoAdd addTodoItem={this.addTodoItem} />
+          <TodoAdd addTask={this.addTask} />
           <TodoSearch
-            onSearchTodo={this.searchTodo}
+            onSearchTodo={this.searchTask}
             searchValue={this.state.searchValue}
           />
           {this.state.isLoading ? (
             <p style={{ paddingLeft: 20 }}>Загрузка...</p>
           ) : (
             <TodoContent
-              todoItems={this.state.todoItems}
+              tasks={this.state.tasks}
               searchValue={this.state.searchValue}
             />
           )}

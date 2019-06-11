@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
+import React, { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 
-export default ({ addTodoItem }) => {
+export default ({ addTask }) => {
   // hook state
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   return (
-    <div className="todo-field__add">
+    <div className="task-field__add">
       <TextField
         id="outlined-full-width"
         label="Добавить"
@@ -19,10 +19,10 @@ export default ({ addTodoItem }) => {
         onChange={({ target: { value } }) => setValue(value)}
         onKeyDown={({ keyCode }) => {
           if (value.trim() && keyCode === 13) {
-            // add todo item
-            addTodoItem(value);
+            // add task item
+            addTask(value);
             // clear field
-            setValue("");
+            setValue('');
           }
         }}
         InputLabelProps={{
